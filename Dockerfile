@@ -2,6 +2,13 @@ ARG  DIST=nginx:1.17.3
 FROM $DIST
 ARG  ARCH=amd64
 
+# Remove sym links from nginx image
+RUN rm /var/log/nginx/access.log
+RUN rm /var/log/nginx/error.log
+
+# Install logrotate
+RUN apt-get update && apt-get -y install logrotate
+
 WORKDIR /root
 
 ENV S6_OVERLAY_VERSION v1.22.1.0

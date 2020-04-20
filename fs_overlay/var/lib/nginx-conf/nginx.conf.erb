@@ -24,8 +24,6 @@ http {
                       '"$http_user_agent" "$http_x_forwarded_for"';
     <% end %>
 
-    access_log <%= ENV['ACCESS_LOG'] || "off" %>;
-
     <% if ENV['WEBSOCKET'] && ENV['WEBSOCKET'].downcase == 'true' %>
     map $http_upgrade $connection_upgrade {
         default upgrade;
@@ -33,7 +31,13 @@ http {
     }
     <% end %>
 
-    access_log  /var/log/nginx/access.log  main;
+    <% unless ENV['ACCESS_LOG'] == 'off' %>
+    access_log <%= ENV['ACCESS_LOG'] || "/var/log/nginx/access.log" %>  main buffer=16k;
+    <% end %>
+
+    <% unless ENV['ERROR_LOG'] == 'off' %>
+    error_log <%= ENV['ERROR_LOG'] || "/var/log/nginx/error.log" %>  error;
+    <% end %>
 
     sendfile        on;
 

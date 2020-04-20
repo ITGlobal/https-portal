@@ -31,6 +31,7 @@ Docker Hub page:
   - [Advanced Usage](#advanced-usage)
     - [Configure Nginx through Environment Variables](#configure-nginx-through-environment-variables)
     - [Override Nginx Configuration Files](#override-nginx-configuration-files)
+    - [Override log rotation](#override-log-rotation)
   - [How It Works](#how-it-works)
   - [About Rate Limits of Let's Encrypt](#about-rate-limits-of-lets-encrypt)
   - [Troubleshooting](#troubleshooting)
@@ -410,6 +411,7 @@ PROXY_SEND_TIMEOUT=60;
 PROXY_READ_TIMEOUT=60;
 ACCESS_LOG=off;
 ACCESS_LOG_INCLUDE_HOST=off;            # include vhost in access log (useful for goaccess => use log-format=VCOMBINED)
+ERROR_LOG=off;
 ```
 
 #### Websocket
@@ -485,6 +487,14 @@ Another example can be found [here](/examples/custom_config).
 If you want to make an Nginx configuration that will be used by all sites, you can overwrite `/var/lib/nginx-conf/default.conf.erb` or `/var/lib/nginx-conf/default.ssl.conf.erb`. These two files will be propagated to each site if the site-specific configuration files are not provided.
 
 Since the config files will be used on all your sites, please keep using the variables already in the file and don't hard-code anything.
+
+#### Override log rotation
+
+If you want to alter log rotation configuration, you can overwrite `/etc/logrotate.d/nginx-`.
+
+Note that log rotation settings are applied to all sites.
+
+By defaults all logs are available at `/var/log/nginx/error.log` and `/var/log/nginx/access.log`.
 
 ### Manually Set RSA Private Key Length
 
